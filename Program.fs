@@ -1,3 +1,4 @@
+open Giraffe
 open System
 open Microsoft.AspNetCore.Builder
 open Microsoft.Extensions.Hosting
@@ -5,9 +6,19 @@ open Microsoft.Extensions.Hosting
 [<EntryPoint>]
 let main args =
     let builder = WebApplication.CreateBuilder(args)
-    let app = builder.Build()
+    builder.Services.AddGiraffe() |> ignore
 
-    app.MapGet("/", Func<string>(fun () -> "Hello World!")) |> ignore
+    let app = builder.Build()
+    app.UseStaticFiles() |> ignore
+
+
+    // app.MapGet("/", Func<string>(fun () -> "Hello World!")) |> ignore
+    let webApp =
+        choose [
+            route "/" >=> htmlFile "./wwwroot/index.html"
+            // your other routes
+        ]
+    app.UseGiraffe(webApp)
 
     app.Run()
 
