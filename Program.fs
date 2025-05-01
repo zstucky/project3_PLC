@@ -25,9 +25,13 @@ let main args =
 
     printfn "%A" Parse.e1
 
-    printfn "%A" Parse.ex1
-    // printfn "%A" Parse.ex2
+    printfn "%A" Parse.e2
 
+    eval Parse.e1 [] |> printfn "%A"    
+    eval Parse.e2 [] |> printfn "%A"
+
+    print Parse.e1 |> printfn "%A"
+    print Parse.e2 |> printfn "%A"
 
     app.Run()
 
