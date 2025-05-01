@@ -3,6 +3,9 @@ open System
 open Microsoft.AspNetCore.Builder
 open Microsoft.Extensions.Hosting
 
+open Parse
+open Fun
+
 [<EntryPoint>]
 let main args =
     let builder = WebApplication.CreateBuilder(args)
@@ -19,6 +22,12 @@ let main args =
             // your other routes
         ]
     app.UseGiraffe(webApp)
+
+    printfn "%A" Parse.e1
+
+    printfn "%A" Parse.ex1
+    // printfn "%A" Parse.ex2
+
 
     app.Run()
 
