@@ -36,7 +36,7 @@ let main (args: string[]) =
     let webApp =
         choose [
             POST >=> route "/api/parse" >=> parseHandler
-            route "/" >=> htmlFile "./wwwroot/index.html"
+            route "/" >=> htmlFile "./Views/index.html"
         ]
     app.UseGiraffe(webApp)
 

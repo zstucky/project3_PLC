@@ -1,35 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Syntax Tree Viewer</title>
 
-    <!-- Link to jsSyntaxTree CSS -->
-    <link rel="stylesheet" href="/default.css">
-</head>
-<body>
-    <h1>Syntax Tree Demo</h1>
-
-    <!-- Container where tree will be drawn -->
-    <div id="treeContainer"></div>
-
-    <!-- Link to jsSyntaxTree JS -->
-    <script src="/syntaxtree.js"></script>
+    <link rel="stylesheet" href="/default.css" />
+  </head>
+  <body>
+    <form id="parseForm">
+      <textarea
+        id="mlInput"
+        rows="4"
+        cols="50"
+        placeholder="Enter MicroML code here…"
+      >
+      </textarea>
+      <br />
+      <button type="submit">Send to Backend</button>
+    </form>
+    <pre id="backendResponse"></pre>
 
     <script>
-        // Example tree data
-        const tree = {
-            root: "S",
-            children: [
-                { root: "NP", children: [{ root: "Det", children: [{ root: "The" }] }, { root: "Noun", children: [{ root: "cat" }] }] },
-                { root: "VP", children: [{ root: "Verb", children: [{ root: "sat" }] }, { root: "PP", children: [{ root: "on" }, { root: "the" }, { root: "mat" }] }] }
-            ]
-        };
+      // gets form id
+      const form = document.getElementById("parseForm");
 
-        // Draw the tree
-        const container = document.getElementById('treeContainer');
-        const treeSvg = new SyntaxTree(tree);
-        container.appendChild(treeSvg.render());
+      // Listens for when the user clicks the button
+      form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        // reads what the user has input
+        const expr = document.getElementById("mlInput").value;
+        console.log("Sending to backend:", expr);
+
+        // sends the users input to the backend
+        const response = await fetch("/api/parse", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ expr }),
+        });
+
+        // reads servers reply and puts it in js object
+        const { bracketExpr } = await response.json();
+        console.log("Bracket notation:", bracketExpr);
+
+        // display on page
+        document.getElementById("backendResponse").textContent = bracketExpr;
+      });
     </script>
-</body>
+  </body>
 </html>
