@@ -43,6 +43,49 @@
   <input type="range" id="spacing" min="75" max="150" value="100" />
 </div>
 
+<form id="parseForm">
+  <textarea
+    id="mlInput"
+    rows="4"
+    cols="50"
+    placeholder="Enter MicroML code here…"
+  >
+  </textarea>
+  <br />
+  <button type="submit">Send to Backend</button>
+</form>
+<pre id="backendResponse"></pre>
+
+<script>
+  // gets form id
+  const form = document.getElementById("parseForm");
+
+  // Listens for when the user clicks the button
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    // reads what the user has input
+    const expr = document.getElementById("mlInput").value;
+    console.log("Sending to backend:", expr);
+
+    // sends the users input to the backend
+    const response = await fetch("/api/parse", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ expr }),
+    });
+
+    // reads servers reply and puts it in js object
+    const { bracketExpr } = await response.json();
+    console.log("Bracket notation:", bracketExpr);
+
+    // display on page
+    document.getElementById("backendResponse").textContent = bracketExpr;
+
+    document.getElementById('code').value = bracketExpr;
+  });
+</script>
+
 <div id="input">
   <h2>Phrase (labelled bracket notation)</h2>
   <textarea rows="5" id="code">[S [NP jsSyntaxTree][VP [V creates][NP nice syntax trees ->1]]]</textarea>
