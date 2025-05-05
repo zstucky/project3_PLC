@@ -10,7 +10,7 @@
   content="jsSyntaxtree - a syntax tree generator for linguists. Draw syntax trees from labelled bracket notation phrases and include them into your assignment/homework." />
 <meta name="keywords" content="syntax tree, linguists, homework, labelled bracket notation" />
 
-<h1>jsSyntaxTree</h1>
+<h1>jsSyntaxTree Modified</h1>
 
 <div id="options">
   <select id="font">
@@ -43,17 +43,19 @@
   <input type="range" id="spacing" min="75" max="150" value="100" />
 </div>
 
-<form id="parseForm">
-  <textarea
-    id="mlInput"
-    rows="4"
-    cols="50"
-    placeholder="Enter MicroML code here…"
-  >
-  </textarea>
-  <br />
-  <button type="submit">Send to Backend</button>
-</form>
+<div id="input">
+  <h2>MicroML Expression</h2>
+  <form id="parseForm">
+    <textarea
+      id="mlInput"
+      rows="4"
+      style="width:100%"
+      placeholder="Enter MicroML code here…"
+    ></textarea>
+    <br />
+    <button type="submit">Convert MicroML</button>
+  </form>
+</div>
 <pre id="backendResponse"></pre>
 
 <script>
@@ -79,9 +81,7 @@
     const { bracketExpr } = await response.json();
     console.log("Bracket notation:", bracketExpr);
 
-    // display on page
-    document.getElementById("backendResponse").textContent = bracketExpr;
-
+    // stores the result in the phrase textbox
     document.getElementById('code').value = bracketExpr;
   });
 </script>
